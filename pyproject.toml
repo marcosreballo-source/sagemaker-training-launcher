@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smlaunch"
+version = "0.1.0"
+description = "Lance, acompanhe e colete treinos de ML na AWS SageMaker a partir de um YAML: um comando para subir o job, esperar, baixar artefatos, importar runs do MLflow e auditar custos."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "boto3>=1.28",
+    "pyyaml>=6.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+sagemaker = ["sagemaker>=2.200"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+smlaunch = "smlaunch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+smlaunch = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

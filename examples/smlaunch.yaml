@@ -1,0 +1,43 @@
+# Exemplo de arquivo de lançamento. Copie para a raiz do seu projeto como smlaunch.yaml.
+# Nenhuma credencial fica aqui: o boto3 usa a cadeia padrão (env, ~/.aws, perfil, SSO).
+
+aws:
+  region: us-east-2
+  role_arn: ${SAGEMAKER_ROLE_ARN:-}   # ARN da role de execução do SageMaker
+  profile: null                       # ou o nome de um perfil do ~/.aws/config
+
+job:
+  name_template: "{project}-{squad}-{experiment}"
+  instance_type: ml.g4dn.2xlarge
+  instance_count: 1
+  max_run_hours: 24
+  use_spot: false                     # spot reduz o custo; exige max_wait_hours >= max_run_hours
+  framework: pytorch                  # pytorch | tensorflow | huggingface
+  framework_version: "2.1"
+  py_version: py310
+  source_dir: .                       # enviado ao S3; requirements.txt dele é instalado no container
+  preflight: ["python", "-c", "print('valide suas configs aqui')"]
+  command: ["python", "train.py", "--config", "{config}"]
+  environment:
+    PYTHONUNBUFFERED: "1"
+  output_dirs: [runs]                 # copiados para o model.tar.gz ao final
+  tags:                               # aparecem no Cost Explorer (smlaunch cost --tag Project)
+    Project: "{project}"
+    Squad: "{squad}"
+
+variables:
+  project: demo
+  squad: research
+  experiment: baseline
+  config: configs/baseline.yaml
+
+outputs:
+  dir: ./output                       # output/<job>/ com checkpoints, config e training.log
+  collect:
+    checkpoints: "**/*.pt"
+    ".": "**/config.resolved.yaml"
+  mlflow_import: true                 # mescla o mlruns do job no MLflow local
+  mlflow_local_dir: ./mlruns
+
+pricing:                              # US$/hora, para a estimativa de custo do `status`
+  ml.g4dn.2xlarge: 0.94

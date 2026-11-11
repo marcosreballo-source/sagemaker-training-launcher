@@ -1,0 +1,9 @@
+﻿__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+output/
+mlruns/
+.smlaunch_last_job
+_smlaunch_entry.py
+.env
