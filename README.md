@@ -9,7 +9,7 @@
 5. importa os runs no MLflow local;
 6. confere se sobrou algum recurso gerando custo.
 
-Ele nasceu do pipeline de treino de um projeto de P&D em otimização de rotas, o [QGAT](https://github.com/), em que dezenas de ablações precisavam rodar em GPUs na nuvem com custo rastreável. <!-- TODO: link do repo quantum-routing-research --> Depois foi extraído como um framework independente de projeto. O treino em si continua sendo só um `command` que o seu projeto já sabe rodar.
+Ele nasceu do pipeline de treino de um projeto de P&D em otimização de rotas, o [QGAT](https://github.com/marcosreballo-source/quantum-routing-research/tree/main/qgat), em que dezenas de ablações precisavam rodar em GPUs na nuvem com custo rastreável. Depois foi extraído como um framework independente de projeto. O treino em si continua sendo só um `command` que o seu projeto já sabe rodar.
 
 ```bash
 smlaunch launch --dry-run                     # mostra o plano e roda o preflight, sem tocar na AWS
@@ -44,7 +44,7 @@ flowchart LR
 ## Instalação
 
 ```bash
-pip install "smlaunch[sagemaker] @ git+https://github.com/<usuario>/sagemaker-training-launcher"
+pip install "smlaunch[sagemaker] @ git+https://github.com/marcosreballo-source/sagemaker-training-launcher"
 cp examples/smlaunch.yaml ./smlaunch.yaml   # e ajuste
 export SAGEMAKER_ROLE_ARN=arn:aws:iam::<conta>:role/<role>
 ```
